@@ -1,9 +1,9 @@
 ---
 import { SITE } from '../data/site.js';
 
-const { name, description } = SITE;
+const { name, brand, tagline, description, domain } = SITE;
 const { title, desc } = Astro.props;
-const pageTitle = title ? `${title} | ${name}` : `${name} — ${SITE.tagline}`;
+const pageTitle = title ? `${title} | ${name}` : `${name} — ${tagline}`;
 const pageDesc = desc || description;
 ---
 
@@ -17,6 +17,12 @@ const pageDesc = desc || description;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDesc} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={`${name} (${brand})`} />
+    <meta property="og:url" content={`https://${domain}/`} />
+    <meta property="og:locale" content="ko_KR" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={`https://${domain}${Astro.url.pathname}`} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <style is:global>
       :root {
@@ -129,6 +135,7 @@ const pageDesc = desc || description;
         <nav>
           <a href="/#free">무료</a>
           <a href="/catalog">전체 이용권</a>
+          <a href="/guide">가이드</a>
           <a href="/#faq">FAQ</a>
           <a class="btn nav-cta" href="/catalog">{SITE.priceWon.toLocaleString()}원 결제</a>
         </nav>
@@ -142,10 +149,11 @@ const pageDesc = desc || description;
         <div class="logo">{name}<span style="color:var(--blue)">.</span></div>
         <p>{SITE.description}</p>
         <p>
-          결제·정산: 페이앱 (주)유디아이디 | 서비스명: {name} | 운영자 연락처: [오픈 시 기재]<br />
+          결제·정산: 페이앱 (주)유디아이디 | 서비스명: {name} ({brand}) | 문의: {SITE.contactEmail}<br />
+          <a href="/privacy">개인정보처리방침</a> · <a href="/terms">이용약관</a> · <a href="/contact">고객센터/문의</a><br />
           ※ 디지털 상품 특성상 결제 후 7일 이내 미열람이라도 전자상거래법상 청약철회가 제한될 수 있습니다.
         </p>
-        <p>© 2026 {name}. All rights reserved.</p>
+        <p>© 2026 {name} ({brand}). All rights reserved.</p>
       </div>
     </footer>
   </body>

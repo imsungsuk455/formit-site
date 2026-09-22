@@ -32,6 +32,7 @@ export async function onRequestPost({ request, env }) {
   const linkkey = get('linkkey');
   const linkval = get('linkval');
   const price = parseInt(get('price') || '0', 10);
+  const payState = get('pay_state');
   const expected = parseInt(env.PRICE_WON || '1000', 10);
 
   const userOk = env.PAYAPP_USERID && userid === env.PAYAPP_USERID;
@@ -39,9 +40,11 @@ export async function onRequestPost({ request, env }) {
     (!env.PAYAPP_LINK_KEY || linkkey === env.PAYAPP_LINK_KEY) &&
     (!env.PAYAPP_LINK_VAL || linkval === env.PAYAPP_LINK_VAL);
   const priceOk = price >= expected;
+  // 결제완료(pay_state=4)일 때만 토큰 발급 — 요청취소(8/16/32)·승인취소(9/64)·결제대기(10) 제외
+  const stateOk = payState === '4';
 
-  if (!userOk || !keyOk || !priceOk) {
-    console.error('feedback reject', { userOk, keyOk, priceOk, price });
+  if (!userOk || !keyOk || !priceOk || !stateOk) {
+    console.error('feedback reject', { userOk, keyOk, priceOk, stateOk, payState, price });
     return NG();
   }
 

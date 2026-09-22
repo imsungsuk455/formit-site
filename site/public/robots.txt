@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /library
+Disallow: /success
+Disallow: /api/
+Sitemap: https://formit.org/sitemap-index.xml

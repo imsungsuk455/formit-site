@@ -1,6 +1,6 @@
-# 잡템 (Jobtem) — 990→1,000원 전체 이용권 사이트
+# 폼잇 (FormIt) — 1,000원 전체 이용권 사이트
 
-취업·생활 양식 파일 판매 사이트. Astro(정적) + Cloudflare Pages Functions + KV + R2.
+취업·생활 양식 파일 판매 사이트. Astro(정적) + Cloudflare Pages Functions + KV + R2. 도메인: formit.org
 
 ## 구조
 
@@ -39,7 +39,7 @@ npm run build
 ```powershell
 git init
 git add .
-git commit -m "init: jobtem site"
+git commit -m "init: formit site"
 # GitHub에 새 리포트 생성 후
 git remote add origin https://github.com/<user>/<repo>.git
 git push -u origin main

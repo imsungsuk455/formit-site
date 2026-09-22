@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE, FREE_FILES } from '../../data/site.js';
+---
+
+<Base title="가이드" desc="취업 서류 작성법 가이드 모음.">
+  <section class="wrap" style="padding:48px 20px;">
+    <span class="pill">가이드</span>
+    <h1 style="margin-top:12px;">취업 서류 작성 가이드</h1>
+    <p class="lead" style="color:var(--muted);">
+      검색량 기준으로 가장 많이 찾는 서류 작성법을 정리했습니다.
+    </p>
+
+    <div class="grid grid-3" style="margin-top:24px;">
+      <a class="card" href="/guide/resume">
+        <span class="pill">이력서 70,400</span>
+        <h2 style="font-size:18px; margin-top:10px;">이력서 작성법 가이드</h2>
+        <p style="color:var(--muted); font-size:14px;">숫자로 증명하는 경력, STAR 자기소개, 실수 5가지</p>
+      </a>
+      <a class="card" href="/guide/self-introduction">
+        <span class="pill">자소서 14,270</span>
+        <h2 style="font-size:18px; margin-top:10px;">자기소개서 쓰는 법</h2>
+        <p style="color:var(--muted); font-size:14px;">4개 항목별 합격 구조와 예시</p>
+      </a>
+      <a class="card" href="/guide/alba-resume">
+        <span class="pill">알바이력서 12,050</span>
+        <h2 style="font-size:18px; margin-top:10px;">알바 이력서 쓰는 법</h2>
+        <p style="color:var(--muted); font-size:14px;">근무시간표 기재법, 직종별 팁</p>
+      </a>
+    </div>
+
+    <div class="card" style="margin-top:28px; background:#f0fdf4; border-color:#bbf7d0;">
+      <strong style="color:var(--free);">무료 서식 다운로드</strong>
+      <ul style="margin:12px 0 0; padding-left:18px;">
+        {FREE_FILES.map((f) => (
+          <li style="margin-bottom:8px;">
+            <a href={f.file} download style="font-weight:600; color:var(--free);">↓ {f.name}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

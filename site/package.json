@@ -9,6 +9,7 @@
     "sync:r2": "wrangler r2 object put store-files/paid/ --file storage/paid/ --recursive"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "astro": "^5.0.0"
   },
   "devDependencies": {

@@ -1,13 +1,17 @@
 export const SITE = {
-  // 사이트 이름 — 확정되면 한 줄만 교체
-  name: '잡템',
-  tagline: '취업 서류, 오늘 바로 완성하는 템플릿',
+  // 사이트 이름
+  name: '폼잇',
+  brand: 'FormIt',
+  domain: 'formit.org',
+  tagline: '필요한 서식, 바로 만들어',
   description:
     '이력서·자소서·알바이력서 무료 다운로드와 40여 개 취업·생활 양식 전체 이용권. 결제 후 7일간 무제한 다운로드.',
   priceWon: 1000, // 페이앱 최소 결제금액 1,000원
   accessDays: 7,
   freeCount: 3,
   totalPlanned: 46,
+  contactEmail: 'support@formit.org',
+  operator: 'FormIt 운영팀',
 };
 
 export const FREE_FILES = [
