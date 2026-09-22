@@ -1,0 +1,12 @@
+# 로컬 dev 전용 config (Cloudflare Pages 배포엔 사용 안 됨 — 루트에 wrangler.toml이 없어야 대시보드 바인딩 모드)
+name = "formit-site"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-01"
+
+[[kv_namespaces]]
+binding = "TOKENS"
+id = "73003dadf3f14f9084199aa5c5b34468"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "store-files"
