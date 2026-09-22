@@ -1,16 +1,3 @@
 name = "formit-site"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-09-01"
-
-# 배포 전 실행:
-#   wrangler kv namespace create TOKENS
-#   wrangler r2 bucket create store-files
-# 발급된 id를 아래에 채우세요. (아래 000...01은 로컬 dev용 임시 id)
-
-[[kv_namespaces]]
-binding = "TOKENS"
-id = "73003dadf3f14f9084199aa5c5b34468"
-
-[[r2_buckets]]
-binding = "FILES"
-bucket_name = "store-files"
