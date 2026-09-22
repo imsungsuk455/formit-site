@@ -5,11 +5,11 @@
 ## 구조
 
 ```
-site/
-  src/                 Astro 페이지 (랜딩·카탈로그·성공·라이브러리)
-  functions/api/       결제·토큰·다운로드 (Cloudflare Pages Functions)
-  public/files/free/   무료 DOCX (즉시 다운로드)
-  storage/paid/        유료 DOCX (R2로 업로드)
+src/                 Astro 페이지 (랜딩·카탈로그·가이드·성공·라이브러리)
+functions/api/       결제·토큰·다운로드 (Cloudflare Pages Functions)
+public/files/free/   무료 DOCX (즉시 다운로드)
+storage/paid/        유료 DOCX (R2로 업로드)
+files/               원본 DOCX + 생성 스크립트
 ```
 
 ## 결제 흐름 (페이앱)
@@ -27,11 +27,10 @@ site/
 ### 1. 로컬 빌드 확인
 
 ```powershell
-cd site
-npm install
-$env:DEV_FAKE_PAID="1"; npm run dev
+pnpm install
+$env:DEV_FAKE_PAID="1"; pnpm run dev
 # http://localhost:4321/catalog → 결제 플로우 로컬 테스트
-npm run build
+pnpm run build
 ```
 
 ### 2. GitHub
