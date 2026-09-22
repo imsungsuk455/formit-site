@@ -1,0 +1,16 @@
+name = "jobtem-site"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-01"
+
+# 배포 전 실행:
+#   wrangler kv namespace create TOKENS
+#   wrangler r2 bucket create store-files
+# 발급된 id를 아래에 채우세요.
+
+[[kv_namespaces]]
+binding = "TOKENS"
+id = "REPLACE_KV_NAMESPACE_ID"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "store-files"

@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, CATEGORIES, FREE_FILES } from '../data/site.js';
+---
+
+<Base title="라이브러리">
+  <section class="wrap" style="padding:48px 20px;">
+    <span class="pill pill-green">접속 중 · 만료 {SITE.accessDays}일</span>
+    <h1 style="margin-top:12px;">내 다운로드 라이브러리</h1>
+    <p class="lead" id="expiryText">결제 토큰을 확인하는 중…</p>
+
+    <div id="locked" class="card" style="display:none; text-align:center; padding:40px;">
+      <h2>토큰이 유효하지 않습니다</h2>
+      <p style="color:var(--muted);">결제 직후 받은 링크를 사용해주세요. 만료되었다면 재결제 후 새 링크가 발급됩니다.</p>
+      <a class="btn" href="/catalog">전체 이용권 보기</a>
+    </div>
+
+    <div id="lib" style="display:none;">
+      <div class="card" style="margin-bottom:16px; background:#f0fdf4; border-color:#bbf7d0;">
+        <strong style="color:var(--free);">무료 3종 (토큰 없이도 계속 사용)</strong>
+        <div style="display:grid; gap:8px; margin-top:10px;">
+          {FREE_FILES.map((f) => (
+            <a href={f.file} download style="font-weight:600; color:var(--free);">↓ {f.name}</a>
+          ))}
+        </div>
+      </div>
+      <div id="paidList" class="grid grid-3"></div>
+    </div>
+  </section>
+
+  <script>
+    const t = new URLSearchParams(location.search).get('t') || '';
+
+    async function load() {
+      if (!t) {
+        document.getElementById('locked').style.display = 'block';
+        return;
+      }
+      try {
+        const res = await fetch(`/api/files?t=${encodeURIComponent(t)}`);
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          document.getElementById('locked').style.display = 'block';
+          return;
+        }
+        document.getElementById('lib').style.display = 'block';
+        document.getElementById('expiryText').textContent =
+          `접속 중 · 만료 ${data.daysLeft}일 남음 · 파일 ${data.files.length + 3}종 이용 가능`;
+
+        const box = document.getElementById('paidList');
+        for (const f of data.files) {
+          const a = document.createElement('a');
+          a.className = 'card';
+          a.href = `/api/file?t=${encodeURIComponent(t)}&k=${encodeURIComponent(f.key)}`;
+          a.innerHTML = `<span class="pill pill-lock">DOCX</span>
+            <div style="font-weight:700; margin-top:10px; font-size:15px;">${f.name}</div>
+            <div style="color:var(--blue); font-size:13.5px; margin-top:8px; font-weight:600;">↓ 다운로드</div>`;
+          box.appendChild(a);
+        }
+      } catch {
+        document.getElementById('locked').style.display = 'block';
+      }
+    }
+    load();
+  </script>
+</Base>

@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, FREE_FILES, CATEGORIES } from '../data/site.js';
+---
+
+<Base title="전체 이용권" desc={`${SITE.totalPlanned}종 파일 전체를 ${SITE.priceWon}원에 ${SITE.accessDays}일간 무제한 다운로드.`}>
+  <section class="wrap" style="padding:48px 20px 16px;">
+    <span class="pill">1회 결제 · {SITE.accessDays}일 · 회원가입 0</span>
+    <h1 style="margin-top:14px;">전체 이용권 {SITE.priceWon.toLocaleString()}원</h1>
+    <p class="lead">
+      결제 직후 전용 링크가 열립니다. {SITE.totalPlanned}종 중 원하는 파일을 선택해 다운로드하세요.
+      기간 내 횟수 제한은 없습니다.
+    </p>
+
+    <div class="card" style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
+      <div>
+        <div style="font-size:14px; color:var(--muted); font-weight:600;">전체 이용권</div>
+        <div style="font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1.2;">
+          {SITE.priceWon.toLocaleString()}원
+        </div>
+        <div style="font-size:13.5px; color:var(--muted);">{SITE.accessDays}일간 무제한 · 만료 시 재결제</div>
+      </div>
+      <button class="btn" id="payBtn" style="font-size:17px; padding:16px 34px;">
+        {SITE.priceWon.toLocaleString()}원 결제하기
+      </button>
+    </div>
+
+    <div id="payForm" class="card" style="margin-top:14px; display:none;">
+      <strong>결제 정보 입력</strong>
+      <p style="font-size:13.5px; color:var(--muted); margin:6px 0 14px;">
+        휴대폰 번호는 결제창 안전을 위해 한 번만 입력받습니다. 사이트 회원가입은 없습니다.
+      </p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <input
+          id="phone"
+          type="tel"
+          inputmode="numeric"
+          placeholder="01012345678"
+          maxlength="11"
+          style="flex:1; min-width:220px; padding:13px 16px; border:1.5px solid var(--line); border-radius:10px; font-size:16px;"
+        />
+        <button class="btn" id="paySubmit">결제창 열기 →</button>
+      </div>
+      <div id="payError" style="color:#dc2626; font-size:14px; margin-top:10px; display:none;"></div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding:24px 20px;">
+    <h2>열리는 파일 목록</h2>
+    <p class="lead">✔ = 지금 바로 받을 수 있는 파일 · 🔒 = 결제 후 전체 열람</p>
+
+    <div class="card" style="margin-bottom:14px; background:#f0fdf4; border-color:#bbf7d0;">
+      <strong style="color:var(--free);">무료 3종 (결제 없음)</strong>
+      <ul style="margin:10px 0 0; padding-left:18px; color:var(--ink); font-size:15px;">
+        {FREE_FILES.map((f) => (
+          <li>
+            <a href={f.file} download style="color:var(--free); font-weight:700; text-decoration:underline;">
+              {f.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {CATEGORIES.map((cat) => (
+      <div class="card" style="margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;">
+          <strong style="font-size:17px;">{cat.name}</strong>
+          <span style="font-size:13px; color:var(--muted);">{cat.blurb} · {cat.count}종 · 비중 {cat.share}</span>
+        </div>
+        <div style="display:grid; gap:8px; margin-top:12px;">
+          {cat.items.map((item) => (
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:var(--bg); border-radius:10px; font-size:14.5px;">
+              <span>
+                {item.free ? '✔ ' : item.ready ? '🔒 ' : '🕓 '}
+                {item.name}
+              </span>
+              <span class:list={['pill', item.free ? 'pill-green' : 'pill-lock']}>
+                {item.free ? '무료' : item.ready ? '이용권' : '업데이트 예정'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <script>
+    const btn = document.getElementById('payBtn');
+    const form = document.getElementById('payForm');
+    const submit = document.getElementById('paySubmit');
+    const phone = document.getElementById('phone');
+    const err = document.getElementById('payError');
+
+    btn?.addEventListener('click', () => {
+      form.style.display = 'block';
+      phone.focus();
+    });
+
+    submit?.addEventListener('click', async () => {
+      err.style.display = 'none';
+      const p = (phone.value || '').replace(/[^0-9]/g, '');
+      if (p.length < 10) {
+        err.textContent = '휴대폰 번호를 정확히 입력해주세요.';
+        err.style.display = 'block';
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = '결제창 생성 중…';
+      try {
+        const res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ phone: p }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.payurl) {
+          throw new Error(data.error || '결제 요청에 실패했습니다.');
+        }
+        location.href = data.payurl;
+      } catch (e) {
+        err.textContent = e.message || '결제 요청에 실패했습니다. 잠시 후 다시 시도해주세요.';
+        err.style.display = 'block';
+        submit.disabled = false;
+        submit.textContent = '결제창 열기 →';
+      }
+    });
+  </script>
+</Base>

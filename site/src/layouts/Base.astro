@@ -1,0 +1,152 @@
+---
+import { SITE } from '../data/site.js';
+
+const { name, description } = SITE;
+const { title, desc } = Astro.props;
+const pageTitle = title ? `${title} | ${name}` : `${name} — ${SITE.tagline}`;
+const pageDesc = desc || description;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style is:global>
+      :root {
+        --blue: #2563eb;
+        --blue-dark: #1d4ed8;
+        --ink: #0f172a;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --free: #16a34a;
+        --radius: 14px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: 'Pretendard', 'Apple SD Gothic Neo', '맑은 고딕', system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+      .btn {
+        display: inline-block;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 700;
+        padding: 14px 26px;
+        border-radius: 999px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background .15s, transform .15s;
+      }
+      .btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+      .btn-ghost {
+        background: #fff;
+        color: var(--blue);
+        border: 1.5px solid var(--blue);
+      }
+      .btn-ghost:hover { background: #eff6ff; }
+      .btn-free {
+        background: var(--free);
+      }
+      .btn-free:hover { background: #15803d; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px;
+      }
+      .pill {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: var(--blue);
+      }
+      .pill-green { background: #dcfce7; color: var(--free); }
+      .pill-lock { background: #f1f5f9; color: var(--muted); }
+      header.site {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(255,255,255,.92);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      header.site .inner {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .logo { font-weight: 800; font-size: 19px; letter-spacing: -.02em; }
+      .logo span { color: var(--blue); }
+      nav a { margin-left: 18px; font-size: 14.5px; color: var(--muted); font-weight: 600; }
+      nav a:hover { color: var(--ink); }
+      .nav-cta { font-size: 14px !important; padding: 9px 16px; }
+      footer.site {
+        margin-top: 64px;
+        border-top: 1px solid var(--line);
+        background: #fff;
+        padding: 36px 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      footer.site .logo { margin-bottom: 8px; }
+      .grid { display: grid; gap: 16px; }
+      @media (min-width: 720px) {
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+      }
+      h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.25; letter-spacing: -.03em; margin: 0 0 14px; }
+      h2 { font-size: clamp(22px, 3vw, 28px); letter-spacing: -.02em; margin: 0 0 8px; }
+      .lead { color: var(--muted); font-size: 17px; margin: 0 0 24px; }
+    </style>
+  </head>
+  <body>
+    <header class="site">
+      <div class="inner">
+        <a class="logo" href="/">{name}<span>.</span></a>
+        <nav>
+          <a href="/#free">무료</a>
+          <a href="/catalog">전체 이용권</a>
+          <a href="/#faq">FAQ</a>
+          <a class="btn nav-cta" href="/catalog">{SITE.priceWon.toLocaleString()}원 결제</a>
+        </nav>
+      </div>
+    </header>
+
+    <slot />
+
+    <footer class="site">
+      <div class="wrap">
+        <div class="logo">{name}<span style="color:var(--blue)">.</span></div>
+        <p>{SITE.description}</p>
+        <p>
+          결제·정산: 페이앱 (주)유디아이디 | 서비스명: {name} | 운영자 연락처: [오픈 시 기재]<br />
+          ※ 디지털 상품 특성상 결제 후 7일 이내 미열람이라도 전자상거래법상 청약철회가 제한될 수 있습니다.
+        </p>
+        <p>© 2026 {name}. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

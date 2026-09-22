@@ -1,0 +1,8 @@
+# 페이앱 가입 후 채울 값 (Cloudflare Pages 환경변수와 동일하게)
+PAYAPP_USERID=
+PAYAPP_LINK_KEY=
+PAYAPP_LINK_VAL=
+# 최소 결제금액 1,000원 (페이앱 제약) — 사이트 표기와 동일하게 유지
+PRICE_WON=1000
+# 로컬 테스트용: 1로 설정하면 결제 검증 없이 토큰 발급 (운영에서는 절대 금지)
+DEV_FAKE_PAID=0

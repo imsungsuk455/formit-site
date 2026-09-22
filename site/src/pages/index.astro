@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, FREE_FILES, CATEGORIES, FAQ } from '../data/site.js';
+---
+
+<Base>
+  <section class="wrap" style="padding: 64px 20px 40px; text-align:center;">
+    <span class="pill">취준생 1위 검색어 「이력서양식」 월 70,400회</span>
+    <h1 style="margin-top:16px;">이력서·자소서,<br />오늘 바로 내려받으세요</h1>
+    <p class="lead">
+      {SITE.freeCount}종은 <strong style="color:var(--free)">로그인 없이 무료</strong>,
+      전체 {SITE.totalPlanned}종은 <strong>1회 {SITE.priceWon.toLocaleString()}원</strong> · {SITE.accessDays}일 무제한.
+    </p>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <a class="btn btn-free" href="#free">무료 3종 받기</a>
+      <a class="btn" href="/catalog">전체 이용권 보기 →</a>
+    </div>
+    <div style="margin-top:18px; font-size:13.5px; color:var(--muted);">
+      결제 후 {SITE.accessDays}일 · 개별 선택 무제한 · 회원가입 없음
+    </div>
+  </section>
+
+  <section id="free" class="wrap" style="padding: 24px 20px;">
+    <h2>무료 다운로드 <span class="pill pill-green">가입 없음</span></h2>
+    <p class="lead">클릭하면 바로 DOCX가 내려받아집니다. 써보고 좋으면 전체 이용권으로 이어주세요.</p>
+    <div class="grid grid-3">
+      {FREE_FILES.map((f) => (
+        <div class="card">
+          <span class="pill pill-green">무료</span>
+          <h3 style="margin:12px 0 6px; font-size:17px;">{f.name}</h3>
+          <p style="color:var(--muted); font-size:14px; margin:0 0 14px;">{f.desc}</p>
+          <div style="font-size:12px; color:var(--muted); margin-bottom:14px;">네이버 월 검색: {f.tag.split(' ')[1]}</div>
+          <a class="btn btn-free" href={f.file} download style="width:100%; text-align:center;">DOCX 다운로드</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap" style="padding: 40px 20px;">
+    <div class="card" style="background:linear-gradient(135deg,#1d4ed8,#2563eb); color:#fff; border:none; text-align:center; padding:40px 24px;">
+      <div style="font-size:14px; opacity:.85; font-weight:600;">전체 이용권</div>
+      <div style="font-size:52px; font-weight:800; letter-spacing:-.03em; margin:6px 0;">
+        {SITE.priceWon.toLocaleString()}원
+      </div>
+      <div style="font-size:15px; opacity:.9; margin-bottom:22px;">
+        1회 결제 · {SITE.accessDays}일간 {SITE.totalPlanned}종 전체 · 토큰 만료 시 재결제
+      </div>
+      <a class="btn" href="/catalog" style="background:#fff; color:var(--blue-dark);">파일 목록 확인하고 결제하기</a>
+      <div style="font-size:13px; opacity:.75; margin-top:14px;">
+        카드 · 네이버페이 · 휴대폰 결제 (페이앱) · 구매자 회원가입 0
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding: 24px 20px;">
+    <h2>무엇이 있나요</h2>
+    <p class="lead">키워드 검색량 기준으로 비중을 정했습니다. 순서대로 업데이트됩니다.</p>
+    <div class="grid grid-4">
+      {CATEGORIES.map((c) => (
+        <a class="card" href="/catalog">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:16px;">{c.name}</strong>
+            <span class="pill">{c.share}</span>
+          </div>
+          <p style="color:var(--muted); font-size:13.5px; margin:10px 0 0;">{c.blurb}</p>
+          <div style="margin-top:12px; font-size:13px; color:var(--blue); font-weight:700;">
+            {c.count}종 →
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="faq" class="wrap" style="padding: 24px 20px 8px;">
+    <h2>자주 묻는 질문</h2>
+    <div class="grid" style="margin-top:16px;">
+      {FAQ.map((f) => (
+        <div class="card">
+          <strong style="font-size:15.5px;">Q. {f.q}</strong>
+          <p style="color:var(--muted); font-size:14.5px; margin:8px 0 0;">{f.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
